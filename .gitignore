@@ -1,0 +1,10 @@
+*/
+*.data
+*.eld
+*.sqlite
+*.db*
+.*
+bookmarks
+!.gitignore
+!bindings/
+!config/
