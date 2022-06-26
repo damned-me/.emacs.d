@@ -13,7 +13,9 @@
 
 
 (column-number-mode)
+;(display-line-numbers-mode)
 (global-display-line-numbers-mode t)
+(setq display-line-numbers 'relative) 
 
 (dolist (mode '(term-mode-hook
 ;		org-mode-hook

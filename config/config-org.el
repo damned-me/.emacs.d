@@ -66,7 +66,8 @@
 (use-package org
   :bind (("C-c l" . org-store-link)
     	 ("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
+         ("C-c c" . org-capture)
+	 ("C-c C-k" . magit-kill-this-buffer))
   :hook (org-mode . dmd/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
@@ -217,28 +218,34 @@
 
 ;(use-package helm-org)
 
-;(use-package org-wiki
-;  :bind
-;  ("C-c w" . org-wiki-insert-link))
+(use-package org-wiki
+  :bind
+  ("C-c w" . org-wiki-insert-link)
+  :hook
+  (org-wiki . org-id-get-create))
 
 ;; First wiki (root directory) is the default.
-;(setq org-wiki-location-list
-;      '("~/documents/org/wiki"))
+(setq org-wiki-location-list
+      '("~/documents/org/org-roam/wiki"))
 
-;(setq org-wiki-backup-location "/data/backups/wiki-backup")
+(setq org-wiki-backup-location "/data/backups/wiki-backup")
 
 ;; Initialize first org-wiki-directory or default org-wiki 
-;; (setq org-wiki-location "~/documents/org/wiki")
-;(setq org-wiki-location (car org-wiki-location-list))
-;(setq org-wiki-server-port "8123") ;; 8000 - default value 
-;(setq org-wiki-server-host "127.0.0.1") ;; Listen only localhost 
+(setq org-wiki-location "~/documents/org/org-roam/wiki")
+(setq org-wiki-location (car org-wiki-location-list))
+(setq org-wiki-server-port "8123") ;; 8000 - default value 
+(setq org-wiki-server-host "127.0.0.1") ;; Listen only localhost 
 
 (use-package org-roam
   :init
   (setq org-roam-capture-templates '(("d" "default" plain "%?"
-     :target (file+head "${slug}.org.gpg"
-                        "#+title: ${title}\n")
-     :unnarrowed t)))
+  :target (file+head i"${slug}.org"
+                     "#+title: ${title}\n")
+  :unnarrowed t)))
+  ;(setq org-roam-capture-templates '(("d" "default" plain "%?"
+  ;   :target (file+head "${slug}.org.gpg"
+  ;                      "#+title: ${title}\n")
+  ;   :unnarrowed t)))
   (setq org-roam-dailies-capture-templates '(("d" "default" entry "* %<%R%z>:%?"
      :target (file+head "%<%Y-%m-%d>.org.gpg"
                         "#+title: %<%Y-%m-%d>\n")
@@ -262,7 +269,10 @@
   (require 'org-roam-export)
   (require 'org-roam-graph)
   (org-roam-setup)
-  (org-roam-db-autosync-mode))
+  (org-roam-db-autosync-mode)
+  (eval-after-load "grep"
+    '(grep-compute-defaults)))
+
 (use-package org-super-agenda
   :defer 2
   :config
